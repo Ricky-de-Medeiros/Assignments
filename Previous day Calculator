@@ -1,0 +1,50 @@
+/* Name: Rick Alves de Medeiros
+
+	ID number: 16332038 				*/
+	
+#include <stdio.h>
+#include <stdbool.h>
+int day, month, year, prevdateday, prevdatemonth, prevdateyear, prevmonthlastday;
+bool leapyear;
+int main() {
+	printf("Enter a date in the form of \"day month year\": ");
+	scanf("%d%d%d", &day, &month, &year);
+	leapyear = false;
+	if(year % 4 == 0) {
+		leapyear = true;
+		if (year % 100 == 0) {
+			leapyear = true;
+			if (year % 400 == 0) {
+				leapyear = true;
+			} else {
+				leapyear = false;
+			}
+		} 
+	}
+	if ((month == 1) || (month == 2) || (month == 4) || (month == 6) || (month == 8) || (month == 9) || (month == 11)) {
+		prevmonthlastday = 31;
+	}
+	if ((month == 5) || (month == 7) || (month == 10) || (month == 12)) {
+		prevmonthlastday = 30;
+	}
+	if ((month == 3) && (leapyear == false)) {
+		prevmonthlastday = 28;
+	} else if ((month == 3) && (leapyear == true)) {
+			prevmonthlastday = 29;
+		}
+	if (day >= 2) {
+		prevdatemonth = month;
+		prevdateyear = year;
+		prevdateday = day - 1;
+		} 
+	if ((day == 1) && (month == 1)) {
+			prevdateyear = year - 1;
+			prevdatemonth = 12;
+			prevdateday = prevmonthlastday;
+	} else if ((day == 1) && (month != 1)) {
+				prevdateyear = year;
+				prevdatemonth = month - 1;
+				prevdateday = prevmonthlastday;
+			}
+	printf("The previous day is %02d/%02d/%04d", prevdateday, prevdatemonth, prevdateyear);
+}
