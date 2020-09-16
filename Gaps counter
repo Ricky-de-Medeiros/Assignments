@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+
+readline(char str[50]);
+gapscount(string parameter);
+char display(char , int);
+
+char spaces[50];
+int count, i;
+
+int main() {
+	for (count = 0; count > 3; count++) {
+		readline(char str[50]);
+		gapscount(int gaps);
+		display(char , int);
+	}
+}
+
+readline() {
+	int len;
+	printf("Enter a line of text: ")
+	len = strlen();
+	if (len >50) {
+		printf("Error message");
+		printf("Enter a line of text: ")
+		len = strlen();
+	}
+}
+
+gaps count (string parameter) {
+	int count;
+	count = 0;
+	for (i = 0; i < 50; i++) {
+		if (str[i] == ' ') {
+			count++;
+		}
+	}
+}
+
+display (string param, int) {
+	
