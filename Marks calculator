@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+int numj, count;
+float mark, sum, max, min, final;
+int main() {
+	count = 0;
+	sum = 0.0;
+	max = 0.0;
+	min = 999.0;
+	final = 0.0;
+	printf("Enter the number of judges at the competition: ");
+	scanf("%d", &numj);
+	while (numj < 5 || numj > 9) {
+		printf("\n\nYour entry was invalid.\n\n");
+		printf("Please enter a number between 5 and 9.\n\n");
+		printf("Enter the number of judges at the competition: ");
+		scanf("%d", &numj);
+	}
+	for (mark = 0.0; count < numj; count++) {
+		printf("Enter the mark for judge %d:", count + 1);
+		scanf("%f", &mark);
+		while (mark < 0.0 || mark > 10.0) {
+		printf("\n\nYour entry was invalid\n\n");
+		printf("Please enter a real number between 0.0 and 10.0:\n\n");
+		printf("Enter the mark for judge %d:", count + 1);
+		scanf("%f", &mark);
+		} 
+		if (mark > max) {
+			max = mark;
+		} else if (mark < min) {
+			min = mark;
+		}
+		sum = sum + mark;
+	}
+	final = (sum - max) / (numj - 1);
+	printf("\n\nThe highest mark was %1.1f\nThe lowest mark was %1.1f\nThe final mark was %1.1f\n", max, min, final);
+}
