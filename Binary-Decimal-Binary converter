@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+	
+	char num[50];
+	char b_or_d[10] = "*";
+	int i, j[10], k, len, total = 0, placevalue = 1, n;
+	
+	printf("Enter a number: ");
+	gets(num);
+	len = strlen(num);
+	
+	if (num[0] == '0') {
+		for (i = 0; i < len; i++) {
+			if (num[i] !='0' && num[i] !='1') {
+				printf("That is an invalid number!");
+				exit(0);
+				} else {
+				b_or_d[0] = 'b';	
+			}
+		}
+	}
+	
+	for (i = 0; i < len; i++) {
+		if (num[i] !='0' && num[i] !='1') {
+			n = atoi(num);
+			if (n < 0 || n > 255) {
+				printf("That is an invalid number!");
+				b_or_d[0] = 'x';
+				exit(0);
+			} else { 
+				b_or_d[0] = 'd';	
+			}
+		}
+	}
+
+	if (b_or_d[0] == '*') {	
+		printf("Is this number decimal (d) or binary (b)? ");
+		gets(b_or_d);
+	}	
+	for (i = 0; i < len; i++) {
+		if (num[i] < '0' || num[i] > '9') {
+			printf("That is an invalid number!");
+			exit(0);
+		}
+	}
+	
+	if (b_or_d[0] == 'b') {
+		//convert from binary to decimal
+		
+		for (i = len-1; i >= 0; i--) {   
+			if (num[i] == '1') {
+				total = (num[i] - 48) * placevalue + total;
+			}
+		placevalue *= 2;
+		}
+		printf("Converting binary to decimal. Answer is: %d", total);
+	}	
+	if (b_or_d[0] == 'd') {
+		//convert from decimal to binary
+		n = atoi(num);
+		for (i = 0; n > 0; i++) {
+			j[i] = n % 2;
+			n = n / 2;
+		}
+		if (i != 7) {
+			while (i <= 7) {
+				j[i] = 0;
+				i++;
+			}
+		}
+		printf("Converting decimal to binary. Answer is: ");
+		for (k = i - 1; k >= 0; k--) {
+			printf("%d", j[k]);
+		}
+	}	
+}
