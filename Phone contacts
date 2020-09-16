@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+char breakstr(char *big, char *sub1, char *sub2, char separator);
+
+int main() {
+	// Declare local variables
+	FILE *f;
+	bool find = false;
+	char filename[50], line[150], phnum[20], fullname[70], secondname[35], firstname[35];
+	char search[70], other[70];
+	int len;
+	
+	//Prompt for file name:
+	printf("Type in a filename: ");
+	gets(filename);
+	
+	// Open file
+	f = fopen(filename,"r"); 
+	
+	// Check file
+	if (f == NULL) {
+		printf("Error. File could not be opened.\n");
+		exit(0);
+	}
+	
+	// Read in a search name
+	printf("Enter the name of the person whose number you want: ");
+	gets(search);
+	
+	// fgets
+	while (fgets(line, 150, f) != NULL) {
+		len = strlen(line) -1;
+		line[len] = '\0';
+			
+		
+		breakstr(line, phnum, fullname, ';');  
+		breakstr(fullname, secondname, firstname, ','); 
+		
+		sprintf(other,"%s %s", firstname, secondname);
+		
+		if (strcmp(search, fullname) == 0) {
+			printf("The number for %s %s is %s", firstname, secondname, phnum);
+			find = true;
+		} else if (strcmp(search, other) == 0) {
+			printf("The number for %s %s is %s", firstname, secondname, phnum);
+			find = true;
+		}
+	}
+	// Close file
+	fclose(f);
+
+	if (find == false) {
+		printf("The name could not be found");
+		exit(0);
+	}
+}
+
+// Function
+char breakstr(char *big, char *sub1, char *sub2, char separator) {
+	int i, j;
+	i = 0;
+	j = 0;
+	while (big[i] != separator) {  
+		sub1[j] = big[i];
+		i++;
+		j++;
+	}
+	sub1[j] = '\0';
+	j = 0;
+	// move past separator
+	i++;
+	while (big[i] != '\0') {
+		sub2[j] = big[i];
+		i++;
+		j++;
+	}
+	sub2[j] = '\0';     
+}
