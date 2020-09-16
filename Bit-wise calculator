@@ -1,0 +1,73 @@
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+	unsigned int i, y, hex1, hex2, answer;
+	char input[50], operation[10];
+	signed int signedHex1;							
+	
+	printf("Type in an expression: ");
+	gets(input);
+	sscanf(input, "%x %s %x", &hex1, operation, &hex2);
+	
+	
+	if(strcmp(operation, "add") == 0) {
+		answer = hex1 + hex2;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "sub") == 0) {
+		answer = hex1 - hex2;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "and") == 0) {
+		answer = hex1 & hex2;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "or") == 0) {
+		answer = hex1 | hex2;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "xor") == 0) {
+		answer = hex1 ^ hex2;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "shl") == 0) {
+		for (i = 0; i < hex2; i++) {
+			hex1 = hex1 << 1;
+		}
+		answer = hex1;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "shr") == 0) {
+		for (i = 0; i < hex2; i++) {
+			hex1 = hex1 >> 1;
+		}
+		answer = hex1;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "asr") == 0) {
+		signedHex1 = hex1;
+		for (i = 0; i < hex2; i++) {
+			signedHex1 = signedHex1 >> 1;
+		}
+		answer = signedHex1;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "rol") == 0) {
+		for (i = 0; i < hex2; i++) {
+			y = (hex1 & 0x80000000) >> 31;
+			hex1 = (hex1 << 1) | y;
+		}
+		answer = hex1;
+		printf("The answer is: %x", answer);
+	}
+	else if(strcmp(operation, "ror") == 0) {
+		for (i = 0; i < hex2; i++) {
+			y = (hex1 & 0x01) << 31;
+			hex1 = (hex1 >> 1) | y;
+		}
+		answer = hex1;
+		printf("The answer is: %x", answer);
+	}
+}
