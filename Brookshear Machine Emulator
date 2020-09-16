@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+	FILE *f;
+	unsigned int temp, i = 0;  
+	unsigned char pc = '0', mem[256], reg[16], instructA, instructB, 
+	instructC, instructD, addressXY;
+
+	
+	//initializing registers to 0
+	for(i = 0;i < 16;i++) {
+		reg[i] = 0x0;
+	}
+	//reset i
+	i = 0;
+	//Open file
+	f = fopen("a3.txt","r");
+	// read file into temp
+	while(fscanf(f, "%x", &temp) != EOF) {
+		/*assign the front half to memory[i] and the back 2 digits to memory[i+1]*/	
+		mem[i] = (temp & 0xFF00) >> 8;
+		mem[i+1] = temp & 0x00FF;
+		i += 2;
+	}
+	//reset i and set pc to 0
+	i = 0;
+	pc = 0;
+	//brookshear machine program
+	while(mem[pc] != 0x0C) { 
+		// print lines
+		printf("%.2X %.2X%.2X - [", pc, mem[pc], mem[pc+1]);
+		
+		for(i = 0;i < 15;i++) {
+			printf("%.2X ", reg[i]);
+		}
+		//print end of the line
+		printf("%.2X]\n", reg[15]);
+		//break down of instructions into variables
+		instructA = (mem[pc] & 0xF0) >> 4;
+		instructB = mem[pc] &0x0F;
+		instructC = (mem[pc+1] & 0xF0) >> 4;
+		instructD = mem[pc+1] & 0x0F;
+		addressXY = mem[pc+1];
+		
+		//Machine instructions
+		if(instructA == 0x1) {
+			reg[instructB] = mem[addressXY];
+		}
+		else if(instructA == 0x2) {
+			reg[instructB] = addressXY;
+		}
+		else if(instructA == 0x3) {
+			mem[addressXY] = reg[instructB];
+		}
+		else if(instructA == 0x4) {
+			reg[instructD] = reg[instructC];
+		}
+		else if(instructA == 0x5) {
+			reg[instructD] = reg[instructB] + reg[instructC];
+		}
+		else if(instructA == 0x7) {
+			reg[instructD] = reg[instructB] | reg[instructC];
+		}
+		else if(instructA == 0x8) {
+			reg[instructD] = reg[instructB] & reg[instructC];
+		}
+		else if(instructA == 0x9) {
+			reg[instructD] = reg[instructB] ^ reg[instructC];
+		}
+		else if(instructA == 0xA) {
+			reg[instructB] = (reg[instructB] >> instructD) | (reg[instructB] << (0x8 - instructD));
+		}
+		else if(instructA == 0xB) {
+			if (reg[instructB] == reg[0]) {
+				pc = addressXY - 2;
+			}
+		}
+		else if(instructA == 0xC) {
+			break;
+		}
+		pc += 2;
+	}
+	fclose(f);
+}
